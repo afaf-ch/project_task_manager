@@ -2,24 +2,16 @@ pipeline {
     agent any
 
     environment {
-        // Définir des variables d'environnement si nécessaire
+        // DÃ©finir des variables d'environnement si nÃ©cessaire
         SONARQUBE_URL = 'http://localhost:9000'
-        SONARQUBE_TOKEN = 'your_sonarqube_token' // Remplacez par votre jeton SonarQube
+        // SONARQUBE_TOKEN = 'your_sonarqube_token' // Remplacez par votre jeton SonarQube
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Cloner le dépôt GitHub
-                git url: 'https://github.com/afaf-ch/project_task_manager.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                // Installer les dépendances PHP via Composer
-                bat 'composer install'
-            }
+                // Cloner le dÃ©pÃ´t GitHub
+                git credentialsId: 'GitHub', url: 'https://github.com/afaf-ch/project_task_manager.git'           }
         }
 
         stage('SonarQube Analysis') {
@@ -27,7 +19,7 @@ pipeline {
                 expression { fileExists('sonar-project.properties') }
             }
             steps {
-                // Analyse de la qualité du code avec SonarQube
+                // Analyse de la qualitÃ© du code avec SonarQube
                 withSonarQubeEnv('SonarQube') {
                     bat 'sonar-scanner'
                 }
@@ -36,7 +28,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Déploiement avec Ansible
+                // DÃ©ploiement avec Ansible
                 bat 'ansible-playbook -i inventory/hosts deploy.yml'
             }
         }
@@ -44,11 +36,11 @@ pipeline {
 
     post {
         always {
-            // Archive les artefacts si nécessaire
+            // Archive les artefacts si nÃ©cessaire
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             
-            // Envoyer des notifications par e-mail en cas de succès ou d'échec
-            mail to: 'your-email@example.com',
+            // Envoyer des notifications par e-mail en cas de succÃ¨s ou d'Ã©chec
+            mail to: 'afafcharroud8@example.com',
                  subject: "Build ${currentBuild.fullDisplayName}",
                  body: "Build ${currentBuild.fullDisplayName} completed with status: ${currentBuild.currentResult}"
         }
