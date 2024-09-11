@@ -34,15 +34,15 @@ pipeline {
         //}
     }
 
-    post {
-        always {
+    //post {
+      //  always {
             // Archive les artefacts si nécessaire
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+           // archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             
             // Envoyer des notifications par e-mail en cas de succès ou d'échec
-            mail to: 'afafcharroud8@example.com',
-                 subject: "Build ${currentBuild.fullDisplayName}",
-                 body: "Build ${currentBuild.fullDisplayName} completed with status: ${currentBuild.currentResult}"
-        }
-    }
+           // mail to: 'afafcharroud8@example.com',
+              //   subject: "Build ${currentBuild.fullDisplayName}",
+               //  body: "Build ${currentBuild.fullDisplayName} completed with status: ${currentBuild.currentResult}"
+      //  }
+    //}
 }
