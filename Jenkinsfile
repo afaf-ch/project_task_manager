@@ -15,13 +15,10 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            when {
-                expression { fileExists('sonar-project.properties') }
-            }
             steps {
                 // Analyse de la qualité du code avec SonarQube
                 withSonarQubeEnv('SonarQube') {
-                    bat 'sonar-scanner'
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
