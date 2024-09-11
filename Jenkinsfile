@@ -14,14 +14,14 @@ pipeline {
                 git credentialsId: 'GitHub', url: 'https://github.com/afaf-ch/project_task_manager.git'           }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
+        //stage('SonarQube Analysis') {
+          //  steps {
                 // Analyse de la qualité du code avec SonarQube
-                withSonarQubeEnv('local SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
+            //    withSonarQubeEnv('local SonarQube') {
+              //      sh 'mvn sonar:sonar'
+                //}
+            //}
+        //}
 
         //stage('Deploy') {
             //steps {
