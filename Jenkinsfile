@@ -29,7 +29,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Déploiement avec Ansible
-                bat 'ansible-playbook -i inventory/hosts deploy.yml'
+                bat 'wsl ansible-playbook -i /mnt/c/chemin/vers/inventory/hosts /mnt/c/chemin/vers/deploy.yml'
             }
         }
     }
