@@ -26,12 +26,12 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
+        //stage('Deploy') {
+            //steps {
                 // Déploiement avec Ansible
-                bat 'wsl ansible-playbook -i /mnt/c/chemin/vers/inventory/hosts /mnt/c/chemin/vers/deploy.yml'
-            }
-        }
+              //  bat 'wsl ansible-playbook -i /mnt/c/chemin/vers/inventory/hosts /mnt/c/chemin/vers/deploy.yml'
+           // }
+        //}
     }
 
     post {
