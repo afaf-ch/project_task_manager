@@ -14,14 +14,18 @@ pipeline {
                 git credentialsId: 'GitHub', url: 'https://github.com/afaf-ch/project_task_manager.git'           }
         }
 
-        //stage('SonarQube Analysis') {
-          //  steps {
-                // Analyse de la qualité du code avec SonarQube
-            //    withSonarQubeEnv('local SonarQube') {
-              //      sh 'mvn sonar:sonar'
-                //}
-            //}
-        //}
+        stage('SonarQube Analysis') {
+            steps {
+                // Exécuter SonarScanner pour analyser le code
+                withSonarQubeEnv('local SonarQube') { // Nom du serveur SonarQube configuré dans Jenkins
+                    sh 'sonar-scanner \
+                        -Dsonar.projectKey=Analyze-code \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONARQUBE_URL} \
+                        -Dsonar.login=${SONARQUBE_TOKEN}'
+                }
+            }
+        }
 
         //stage('Deploy') {
             //steps {
