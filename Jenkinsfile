@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Définir des variables d'environnement si nécessaire
         SONARQUBE_URL = 'http://localhost:9000'
-        // SONARQUBE_TOKEN = 'your_sonarqube_token' // Remplacez par votre jeton SonarQube
+        SONARQUBE_TOKEN = credentials('sonar-token')// Remplacez par votre jeton SonarQube
     }
 
     stages {
@@ -18,11 +18,11 @@ pipeline {
             steps {
                 // Exécuter SonarScanner pour analyser le code
                 withSonarQubeEnv('local SonarQube') { // Nom du serveur SonarQube configuré dans Jenkins
-                    sh 'sonar-scanner \
-                        -Dsonar.projectKey=Analyze-code \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=${SONARQUBE_URL} \
-                        -Dsonar.login=${SONARQUBE_TOKEN}'
+                    bat 'sonar-scanner \
+                         -Dsonar.projectKey=Analyze-code \
+                         -Dsonar.sources=. \
+                         -Dsonar.host.url=%SONARQUBE_URL% \
+                         -Dsonar.login=%SONARQUBE_TOKEN%'
                 }
             }
         }
