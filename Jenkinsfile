@@ -21,8 +21,8 @@ pipeline {
                     bat 'sonar-scanner \
                          -Dsonar.projectKey=Analyze-code \
                          -Dsonar.sources=. \
-                         -Dsonar.host.url=%SONARQUBE_URL% \
-                         -Dsonar.login=%SONARQUBE_TOKEN%'
+                         -Dsonar.host.url=http://localhost:9000 \
+                         -Dsonar.login=sonar-token
                 }
             }
         }
