@@ -17,9 +17,9 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 // Exécuter SonarScanner pour analyser le code
-                withSonarQubeEnv('local SonarQube') { // Nom du serveur SonarQube configuré dans Jenkins
-                    bat "${SONAR_RUNNER_HOME}/bin/sonar-scanner.bat -Dsonar.projectKey=Analyze-code -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONARQUBE_TOKEN}"
-                
+               script {
+                    def scannerPath = 'C:\sonar-scanner\sonar-scanner-6.1.0.4477-windows-x64\bin\sonar-scanner.bat'
+                    bat "${scannerPath} -Dsonar.projectKey=Analyze-code -Dsonar.sources=."
                 }
             }
         }
