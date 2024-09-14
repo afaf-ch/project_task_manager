@@ -19,8 +19,8 @@ pipeline {
                 // Exécuter SonarScanner pour analyser le code
                script {
                     def scannerPath = 'C:\\sonar-scanner\\sonar-scanner-6.1.0.4477-windows-x64\\bin\\sonar-scanner.bat'
-                    bat "${scannerPath} -Dsonar.projectKey=Analyze-code -Dsonar.sources=."
-                }
+                    bat "${scannerPath} -Dsonar.projectKey=Analyze-code -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=@CharroudAfaf12@"
+               }
             }
         }
 
