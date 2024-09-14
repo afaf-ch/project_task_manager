@@ -22,7 +22,7 @@ pipeline {
                          -Dsonar.projectKey=Analyze-code \
                          -Dsonar.sources=. \
                          -Dsonar.host.url=http://localhost:9000 \
-                         -Dsonar.login=sonar-token
+                         -Dsonar.login=sonar-token'
                 }
             }
         }
