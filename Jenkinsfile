@@ -13,6 +13,21 @@ pipeline {
                 // Cloner le dépôt GitHub
                 git credentialsId: 'GitHub', url: 'https://github.com/afaf-ch/project_task_manager.git'           }
         }
+        stage('Build') {
+            steps {
+                script {
+                    // Exécuter les commandes pour construire le projet
+                    sh '''
+                    # Installer les dépendances PHP
+                    composer install
+
+                    # Installer les dépendances JavaScript
+                    npm install
+                    '''
+                }
+            }
+        }
+
 
         stage('SonarQube Analysis') {
             steps {
@@ -23,24 +38,71 @@ pipeline {
                }
             }
         }
+         stage('Trivy Scan') {
+            steps {
+                // Scanner d'images Docker avec Trivy
+                sh '''
+                trivy image ${DOCKER_IMAGE}
+                '''
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Construire l'image Docker
+                    sh '''
+                    docker build -t ${DOCKER_IMAGE} .
+                    '''
+                }
+            }
+        }
+         stage('Push Docker Image') {
+            steps {
+                script {
+                    // Pousser l'image Docker vers Docker Hub
+                    sh '''
+                    docker push ${DOCKER_IMAGE}
+                    '''
+                }
+            }
+        }
 
-        //stage('Deploy') {
-            //steps {
-                // Déploiement avec Ansible
-              //  bat 'wsl ansible-playbook -i /mnt/c/chemin/vers/inventory/hosts /mnt/c/chemin/vers/deploy.yml'
-           // }
-        //}
+        stage('Deploy with ArgoCD') {
+            steps {
+                script {
+                    // Déployer l'application avec ArgoCD
+                    sh '''
+                    argocd app sync task-manager
+                    '''
+                }
+            }
+        }
+        stage('Operate with Kubernetes') {
+            steps {
+                script {
+                    // Opérations avec Kubernetes
+                    sh '''
+                    kubectl --kubeconfig=${KUBE_CONFIG} get pods
+                    kubectl --kubeconfig=${KUBE_CONFIG} get services
+                    '''
+                }
+            }
+        }
+        stage('Prometheus and Grafana Monitoring') {
+            steps {
+                script {
+                    // Optionnel: Ajouter des vérifications de monitoring avec Prometheus et Grafana
+                    // Pour des tâches spécifiques, consultez l'API ou les dashboards Grafana.
+                }
+            }
+        }
     }
-
-    //post {
-      //  always {
-            // Archive les artefacts si nécessaire
-           // archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            
-            // Envoyer des notifications par e-mail en cas de succès ou d'échec
-           // mail to: 'afafcharroud8@example.com',
-              //   subject: "Build ${currentBuild.fullDisplayName}",
-               //  body: "Build ${currentBuild.fullDisplayName} completed with status: ${currentBuild.currentResult}"
-      //  }
-    //}
+     post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
 }
